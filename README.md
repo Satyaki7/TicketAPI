@@ -1,1 +1,3 @@
 # TicketAPI
+
+![ERD](ERD.png)

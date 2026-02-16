@@ -11,13 +11,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "events")
-public class Event {
+@Table(name = "users")
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Getter
-    String eventId;
+    String userId;
 
     @Getter
     @Setter
@@ -25,26 +25,18 @@ public class Event {
 
     @Getter
     @Setter
-    Date date;
+    String email;
 
     @Getter
     @Setter
-    Integer price;
+    String password;
 
     @Getter
     @Setter
-    Integer rows;
+    String role;
 
     @Getter
     @Setter
-    Integer cols;
-
-    @Getter
-    @Setter
-    Integer availableSeats1 = rows * cols;
-
-    @Getter
-    @Setter
-    Integer[] bookedSeats;
+    Date lastLogin;
 
 }
