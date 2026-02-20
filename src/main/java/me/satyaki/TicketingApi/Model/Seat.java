@@ -31,4 +31,7 @@ public class Seat {
     @Getter
     @Setter
     String version;
+
+    public Seat() {
+    }
 }

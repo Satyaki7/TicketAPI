@@ -30,4 +30,7 @@ public class Booking {
     @Setter
     String status; // e.g., "CONFIRMED", "CANCELLED", "PENDING"
 
+    public Booking() {
+    }
+
 }

@@ -33,6 +33,14 @@ public class Events {
 
     @Getter
     @Setter
+    String description;
+
+    @Getter
+    @Setter
+    String location;
+
+    @Getter
+    @Setter
     Integer price;
 
     @Getter
@@ -50,5 +58,8 @@ public class Events {
     @Getter
     @Setter
     Integer[] bookedSeats;
+
+    public Events() {
+    }
 
 }

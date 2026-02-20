@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import me.satyaki.TicketingApi.DTO.userDTO;
+import me.satyaki.TicketingApi.Mapper.userDTOMapper;
 
 @Entity
 @Table(name = "users")
@@ -38,5 +40,13 @@ public class Users {
     @Getter
     @Setter
     Date lastLogin;
+
+    public Users() {
+    }
+
+    public userDTO map(userDTOMapper userMapper) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'map'");
+    }
 
 }
