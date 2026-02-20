@@ -41,12 +41,7 @@ public class UserService {
      * @return Optional containing the user if found
      */
     public Optional<userDTO> getUserById(Long userId) {
-        return userRepository.findById(userId).map(user -> new userDTO(
-                user.getUserId(),
-                user.getName(),
-                user.getEmail(),
-                user.getLastLogin(),
-                user.getRole()));
+        return userRepository.findById(userId).map(userMapper);
     }
 
     /**
