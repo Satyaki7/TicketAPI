@@ -1,11 +1,14 @@
-package me.satyaki.TicketingApi.Config;
+package me.satyaki.TicketingApi.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Security configuration for the Ticketing API.
@@ -28,20 +31,26 @@ public class SecurityConfig {
      * @return configured SecurityFilterChain
      * @throws Exception if configuration fails
      */
+
+    @Autowired
+    private JwtFilter jwtFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // Allow public access to create user endpoint (for registration)
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers(HttpMethod.POST, "/api/users", "/api/users/").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
-                        // Secure all other endpoints - require authentication
+                .csrf(customizer -> customizer.disable())
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/Signup", "/Login").permitAll()
                         .anyRequest().authenticated())
-                // For now, disable CSRF for testing purposes
-                // In production, configure CSRF properly or use JWT tokens
-                .csrf(csrf -> csrf.disable())
-                // Use HTTP Basic authentication for testing
-                .httpBasic(basic -> {});
+                .httpBasic(Customizer.withDefaults())
+                // .oauth2Login(oauth2 -> oauth2
+                // .userInfoEndpoint(userInfo -> userInfo.userService(customOAuthUserService))
+                // .successHandler(oAuth2LoginSuccessHandler))
+
+                // oauth2 login not needed currently
+
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
