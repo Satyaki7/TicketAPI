@@ -6,9 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
+import org.springframework.security.core.userdetails.UserDetails;
 import me.satyaki.TicketingApi.Model.Users;
 
-public class UserPrincipal {
+public class UserPrincipal implements UserDetails {
     private Users user;
 
     public UserPrincipal(Users user) {
@@ -27,6 +28,26 @@ public class UserPrincipal {
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return user.getName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

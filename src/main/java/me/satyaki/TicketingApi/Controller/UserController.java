@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import me.satyaki.TicketingApi.DTO.AuthResponse;
 import me.satyaki.TicketingApi.DTO.userDTO;
 import me.satyaki.TicketingApi.Exception.InvalidRequestException;
 import me.satyaki.TicketingApi.Exception.ResourceNotFoundException;
@@ -36,14 +37,27 @@ public class UserController {
      * POST /api/users
      */
 
-    @PostMapping
-    public ResponseEntity<Users> createUser(@RequestBody Users user) {
+    @PostMapping("/signup")
+    public ResponseEntity<AuthResponse> createUser(@RequestBody Users user) {
         if (user == null || user.getName() == null || user.getEmail() == null) {
             throw new InvalidRequestException("User name and email are required");
         }
-        Users createdUser = userService.createUser(user);
+        AuthResponse createdUser = userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
+
+    // @GetMapping("/login")
+    // public ResponseEntity<AuthResponse> loginUser(@RequestBody Users user) {
+    // if (user == null || user.getEmail() == null || user.getPassword() == null) {
+    // throw new InvalidRequestException("Email and password are required for
+    // login");
+    // }
+    // // In a real application, you would authenticate the user here
+    // // For now, we're just returning a dummy response
+    // AuthResponse dummyResponse = new AuthResponse(1L, "dummy-jwt-token", "Dummy
+    // User", "USER", null);
+    // return new ResponseEntity<>(dummyResponse, HttpStatus.OK);
+    // }
 
     /**
      * Get a user by ID

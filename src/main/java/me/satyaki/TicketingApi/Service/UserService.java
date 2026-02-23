@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import me.satyaki.TicketingApi.DTO.AuthResponse;
 import me.satyaki.TicketingApi.DTO.userDTO;
+import me.satyaki.TicketingApi.Mapper.AuthDTOMapper;
 import me.satyaki.TicketingApi.Mapper.userDTOMapper;
 import me.satyaki.TicketingApi.Model.Users;
 import me.satyaki.TicketingApi.Repository.userRepo;
@@ -15,13 +17,18 @@ import me.satyaki.TicketingApi.Repository.userRepo;
 @Service
 public class UserService {
 
-    @Autowired
-    private userRepo userRepository;
+    private final userRepo userRepository;
     private final userDTOMapper userMapper;
+    private final AuthDTOMapper authMapper;
+    private final BCryptPasswordEncoder encoder;
 
-    @Autowired
-    public UserService(userDTOMapper userMapper) {
+    public UserService(userRepo userRepository,
+            userDTOMapper userMapper,
+            AuthDTOMapper authMapper) {
+        this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.authMapper = authMapper;
+        this.encoder = new BCryptPasswordEncoder(12);
     }
 
     /**
@@ -30,8 +37,10 @@ public class UserService {
      * @param user the user object to create
      * @return the created user
      */
-    public Users createUser(Users user) {
-        return userRepository.save(user);
+    public AuthResponse createUser(Users user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        Users savedUser = userRepository.save(user);
+        return authMapper.apply(savedUser);
     }
 
     /**

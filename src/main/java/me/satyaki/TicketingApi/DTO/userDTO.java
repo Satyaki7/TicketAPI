@@ -8,5 +8,4 @@ public record userDTO(
         String email,
         Date lastLogin,
         String role) {
-
 }

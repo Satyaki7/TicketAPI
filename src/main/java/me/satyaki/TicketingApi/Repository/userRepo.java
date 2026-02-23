@@ -10,6 +10,6 @@ import me.satyaki.TicketingApi.Model.Users;
 @Repository
 public interface userRepo extends JpaRepository<Users, Long> {
 
-    Optional<Users> findByUserName(String username);
+    Optional<Users> findByName(String username);
 
 }
